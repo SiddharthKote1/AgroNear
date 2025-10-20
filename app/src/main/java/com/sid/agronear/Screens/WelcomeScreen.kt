@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.sid.agronear.R
+import com.sid.agronear.Routes
 
 @Composable
 fun WelcomeScreen(navController: NavController){
@@ -66,7 +67,7 @@ fun WelcomeScreen(navController: NavController){
                     fontSize = 18.sp)
                 Spacer(modifier=Modifier.height(40.dp))
                 Button(onClick={
-                    // navController.navigate()
+                     navController.navigate(Routes.SelectionScreen)
                 },
                     modifier=Modifier.fillMaxWidth()
                         .padding(10.dp)

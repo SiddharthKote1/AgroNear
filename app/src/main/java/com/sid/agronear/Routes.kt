@@ -4,5 +4,7 @@ import org.intellij.lang.annotations.Language
 
 object Routes {
     const val LanguageScreen="LanguageScreen"
-    const val WelcomeScreem = "Welcome"
+    const val WelcomeScreem = "WelcomeScreen"
+    const val SelectionScreen = "SelectionScreen"
+    const val LoginScreen = "LoginScreen"
 }
