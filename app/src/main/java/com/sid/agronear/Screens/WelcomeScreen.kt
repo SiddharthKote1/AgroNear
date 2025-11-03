@@ -2,16 +2,7 @@ package com.sid.agronear.Screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -20,10 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,62 +23,96 @@ import com.sid.agronear.R
 import com.sid.agronear.Routes
 
 @Composable
-fun WelcomeScreen(navController: NavController){
-    Box(modifier=Modifier.fillMaxSize()
-        .background(Color(0xFFD9D9D9))){
+fun WelcomeScreen(navController: NavController) {
+
+    // ✅ Get screen height and width for proportional scaling
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val screenWidth = configuration.screenWidthDp.dp
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFE8F5E9))
+    ) {
         Column(
-            modifier = Modifier.fillMaxSize()
-                .padding(top = 120.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = screenHeight * 0.15f), // 15% from top (dynamic)
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
+            // ✅ Image scales with screen width
             Image(
                 painter = painterResource(R.drawable.farmerintro),
                 contentDescription = null,
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier
+                    .width(screenWidth * 0.55f) // 55% of screen width
+                    .aspectRatio(1f) // keeps it square
             )
 
-            Spacer(modifier = Modifier.height(80.dp))
-            Column(modifier=Modifier.fillMaxSize()
-                .padding(start = 10.dp, end = 10.dp),
-                horizontalAlignment = Alignment.Start) {
-                Text("Welcome to",
-                    fontSize = 40.sp,
-                    color=Color(0xFF00A11B),
-                    fontWeight = FontWeight.Bold)
-                Spacer(modifier = Modifier.height(2.dp))
-                Text("AgroNear",
-                    fontSize = 40.sp,
-                    color=Color(0xFF00A11B),
-                    fontWeight = FontWeight.Bold)
-                Spacer(modifier = Modifier.height(60.dp))
-                Text("“Connecting farmers and buyers in your neighborhood.",
-                    color=Color.Black,
-                    fontWeight=FontWeight.Bold,
-                    fontSize = 18.sp)
-                Spacer(modifier=Modifier.height(40.dp))
-                Button(onClick={
-                     navController.navigate(Routes.SelectionScreen)
-                },
-                    modifier=Modifier.fillMaxWidth()
-                        .padding(10.dp)
-                        .width(45.dp).height(45.dp),
-                    shape=RoundedCornerShape(10.dp),
+            Spacer(modifier = Modifier.height(screenHeight * 0.1f))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = screenWidth * 0.05f), // 5% horizontal padding
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    "Welcome to",
+                    fontSize = (screenWidth.value * 0.08).sp, // scales text
+                    color = Color(0xFF00A11B),
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    "AgroNear",
+                    fontSize = (screenWidth.value * 0.08).sp,
+                    color = Color(0xFF00A11B),
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(screenHeight * 0.05f))
+
+                Text(
+                    "“Connecting farmers and buyers in your neighborhood.”",
+                    color = Color.Black,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = (screenWidth.value * 0.045).sp // adjusts automatically
+                )
+
+                Spacer(modifier = Modifier.height(screenHeight * 0.05f))
+
+                // ✅ Responsive Button
+                Button(
+                    onClick = {
+                        navController.navigate(Routes.SelectionScreen)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(1f)
+                        .height(screenHeight * 0.06f), // 7% of screen height
+                    shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF00A11B) ,
-                        contentColor= Color.Black
-                    )){
-                    Text("Continue",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold)
+                        containerColor = Color(0xFF00A11B),
+                        contentColor = Color.Black
+                    )
+                ) {
+                    Text(
+                        "Continue",
+                        fontSize = (screenWidth.value * 0.04).sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
         }
     }
 }
 
-@Composable
 @Preview(showBackground = true)
-fun WelcomeScreenPreview(){
+@Composable
+fun WelcomeScreenPreview() {
     WelcomeScreen(navController = NavController(context = LocalContext.current))
 }
+
+
