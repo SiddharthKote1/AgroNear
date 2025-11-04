@@ -53,7 +53,7 @@ fun ProfileScreen(navController: NavController) {
                         bottomEnd = (80 * scaleW).dp
                     )
                 )
-                .background(Color(0xFF98FB98))
+                .background(Color(0xFF66BB6A))
         ) {
             IconButton(
                 onClick = { navController.popBackStack() },

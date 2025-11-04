@@ -114,10 +114,10 @@ fun SignupScreen(navController: NavController) {
                         Spacer(modifier = Modifier.height((10 * scaleH).dp))
 
                         // Email
-                        OutlinedTextField(
-                            value = email,
-                            onValueChange = { email = it },
-                            label = { Text("Email", color = Color.Black, fontSize = (15 * scaleW).sp) },
+                        OutlinedTextField( value = email, onValueChange = { email = it },
+                            label = { Text("Email",
+                                color = Color.Black, fontSize =
+                                    (15 * scaleW).sp) },
                             placeholder = { Text("Enter your Email") },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
@@ -130,10 +130,7 @@ fun SignupScreen(navController: NavController) {
                                 focusedLabelColor = Color.Black,
                                 unfocusedLabelColor = Color.DarkGray,
                                 focusedIndicatorColor = Color.Black,
-                                unfocusedIndicatorColor = Color.Gray
-                            )
-                        )
-
+                                unfocusedIndicatorColor = Color.Gray ) )
                         Spacer(modifier = Modifier.height((10 * scaleH).dp))
 
                         // Password
@@ -149,8 +146,12 @@ fun SignupScreen(navController: NavController) {
                             trailingIcon = {
                                 val icon = if (passwordVisible) R.drawable.visible else R.drawable.hide
                                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                                    Icon(painter = painterResource(id = icon), contentDescription = null, tint = Color.Black,
-                                        modifier=Modifier.size(22.dp))
+                                    Icon(
+                                        painter = painterResource(id = icon),
+                                        contentDescription = if (passwordVisible) "Hide password" else "Show password",
+                                        tint = Color.Black,
+                                        modifier = Modifier.size(22.dp)
+                                    )
                                 }
                             },
                             colors = TextFieldDefaults.colors(
@@ -167,7 +168,6 @@ fun SignupScreen(navController: NavController) {
 
                         Spacer(modifier = Modifier.height((10 * scaleH).dp))
 
-                        // Re-Password
                         OutlinedTextField(
                             value = rePassword,
                             onValueChange = { rePassword = it },
@@ -178,13 +178,13 @@ fun SignupScreen(navController: NavController) {
                             shape = RoundedCornerShape((10 * scaleW).dp),
                             visualTransformation = if (rePasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                             trailingIcon = {
-                                val iconRes = if (passwordVisible) R.drawable.visible else R.drawable.hide
-                                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                                val iconRes = if (rePasswordVisible) R.drawable.visible else R.drawable.hide
+                                IconButton(onClick = { rePasswordVisible = !rePasswordVisible }) {
                                     Icon(
                                         painter = painterResource(id = iconRes),
-                                        contentDescription = if (passwordVisible) "Hide password" else "Show password",
+                                        contentDescription = if (rePasswordVisible) "Hide password" else "Show password",
                                         tint = Color.Black,
-                                        modifier=Modifier.size(22.dp),
+                                        modifier = Modifier.size(22.dp)
                                     )
                                 }
                             },
@@ -199,6 +199,7 @@ fun SignupScreen(navController: NavController) {
                                 unfocusedIndicatorColor = Color.Gray
                             )
                         )
+
 
                         Spacer(modifier = Modifier.height((8 * scaleH).dp))
                     }

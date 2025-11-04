@@ -31,7 +31,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,47 +50,59 @@ import com.sid.agronear.Routes
 fun SettingsScreen(navController: NavController) {
     var darkMode by remember { mutableStateOf(false) }
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFE8F5E9))
     ) {
-        // Green curved header
+
+        val context = LocalContext.current
+        val config = LocalConfiguration.current
+        val screenWidth = config.screenWidthDp
+        val screenHeight = config.screenHeightDp
+        val scaleW = screenWidth / 411f
+        val scaleH = screenHeight / 891f
+
+        // ✅ Header Section
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(160.dp)
-                .background(
-                    color = Color(0xFF66BB6A),
-                    shape = RoundedCornerShape(bottomStart = 100.dp, bottomEnd = 100.dp)
-                ),
-            contentAlignment = Alignment.Center
+                .height((140 * scaleH).dp)
+                .clip(
+                    RoundedCornerShape(
+                        bottomStart = (80 * scaleW).dp,
+                        bottomEnd = (80 * scaleW).dp
+                    )
+                )
+                .background(Color(0xFF66BB6A))
         ) {
+            IconButton(
+                onClick = {  },
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(top = (40 * scaleH).dp, start = (16 * scaleW).dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
+
             Text(
-                text = "Settings",
+                text = "Notifications",
                 color = Color.White,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
+                fontSize = (22 * scaleW).sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.Center)
             )
         }
 
-        // Back arrow
-        IconButton(
-            onClick = { navController.popBackStack() },
-            modifier = Modifier.padding(start = 10.dp, top = 10.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Back",
-                tint = Color.Black
-            )
-        }
 
         // Content
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 180.dp),
+                .padding(top = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Option: Dark Mode

@@ -42,13 +42,12 @@ fun WelcomeScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-            // ✅ Image scales with screen width
             Image(
                 painter = painterResource(R.drawable.farmerintro),
                 contentDescription = null,
                 modifier = Modifier
-                    .width(screenWidth * 0.55f) // 55% of screen width
-                    .aspectRatio(1f) // keeps it square
+                    .width(screenWidth * 0.55f)
+                    .aspectRatio(1f)
             )
 
             Spacer(modifier = Modifier.height(screenHeight * 0.1f))
@@ -56,7 +55,7 @@ fun WelcomeScreen(navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = screenWidth * 0.05f), // 5% horizontal padding
+                    .padding(horizontal = screenWidth * 0.05f),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(

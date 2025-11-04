@@ -98,17 +98,6 @@ fun LoginScreen(navController: NavController) {
                         textStyle = LocalTextStyle.current.copy(fontSize = (14 * scaleW).sp),
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape((10 * scaleW).dp),
-                        trailingIcon = {
-                            val iconRes = if (passwordVisible) R.drawable.visible else R.drawable.hide
-                            IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                                Icon(
-                                    painter = painterResource(id = iconRes),
-                                    contentDescription = if (passwordVisible) "Hide password" else "Show password",
-                                    tint = Color.Black,
-                                    modifier=Modifier.size(22.dp)
-                                )
-                            }
-                        },
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color(0xFFD9D9D9),
                             unfocusedContainerColor = Color(0xFFD9D9D9),
