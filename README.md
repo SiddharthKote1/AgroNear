@@ -46,16 +46,5 @@ SharedPreferences / DataStore
 
 Android application is fully implemented and integrated with backend APIs.
 
-flowchart TD
-    A[App Launch] --> B[Login / Register]
-    B --> C{User Role}
-    C -->|Farmer| D[Farmer Dashboard]
-    C -->|Buyer| E[Buyer Dashboard]
 
-    D --> F[Upload Product]
-    D --> G[View Uploaded Products]
-
-    E --> H[Browse Products]
-    H --> I[View Product Details]
-    I --> J[Add to Wishlist]
 
