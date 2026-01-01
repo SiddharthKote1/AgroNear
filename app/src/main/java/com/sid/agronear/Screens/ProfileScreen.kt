@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +37,11 @@ fun ProfileScreen(navController: NavController) {
     val config = LocalConfiguration.current
     val scaleW = config.screenWidthDp / 411f
     val scaleH = config.screenHeightDp / 891f
+
+    val context = LocalContext.current
+    val sharedPrefs = context.getSharedPreferences("AgroNearPrefs", android.content.Context.MODE_PRIVATE)
+    val role = sharedPrefs.getString("user_role", "Occupation") // default value shown if not set
+
 
     Box(
         modifier = Modifier
@@ -76,7 +82,6 @@ fun ProfileScreen(navController: NavController) {
             )
         }
 
-        // 🧍‍♂️ Main content (unchanged)
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -101,7 +106,7 @@ fun ProfileScreen(navController: NavController) {
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Occupation",
+                text = role ?: "Occupation",
                 fontSize = (14 * scaleW).sp,
                 fontWeight = FontWeight.Medium,
                 color = Color.Black

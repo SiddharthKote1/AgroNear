@@ -5,8 +5,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.sid.agronear.Routes.MainScreen
 import com.sid.agronear.Screens.AboutAppScreen
 import com.sid.agronear.Screens.LoginScreen
+import com.sid.agronear.Screens.MainScreen
 import com.sid.agronear.Screens.NotificationScreen
 import com.sid.agronear.Screens.ProfileScreen
 import com.sid.agronear.Screens.SelectionScreen
@@ -26,14 +28,14 @@ fun NavGraph(modifier: Modifier = Modifier) {
         composable(Routes.WelcomeScreem) {
             WelcomeScreen(navController = navController)
         }
-        composable(Routes.SelectionScreen){
-            SelectionScreen(navController=navController)
-        }
         composable(Routes.LoginScreen) {
             LoginScreen(navController = navController)
         }
         composable(Routes.SignupScreen){
             SignupScreen(navController=navController)
+        }
+        composable(Routes.SelectionScreen){
+            SelectionScreen(navController=navController)
         }
         composable(Routes.NotificationScreen){
             NotificationScreen(navController=navController)
@@ -46,6 +48,9 @@ fun NavGraph(modifier: Modifier = Modifier) {
         }
         composable(Routes.SettingsScreen){
             SettingsScreen(navController=navController)
+        }
+        composable(Routes.MainScreen) {
+            MainScreen(navController = navController)
         }
     }
 }

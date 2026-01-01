@@ -16,4 +16,6 @@ object Routes {
 
     const val ProfileScreen="ProfileScreen"
     const val AboutAppScreen="AboutAppScreen"
+
+    const val MainScreen="MainScreen"
 }

@@ -90,7 +90,6 @@ fun SignupScreen(navController: NavController) {
 
                         Spacer(modifier = Modifier.height((20 * scaleH).dp))
 
-                        // Name
                         OutlinedTextField(
                             value = name,
                             onValueChange = { name = it },
@@ -113,7 +112,6 @@ fun SignupScreen(navController: NavController) {
 
                         Spacer(modifier = Modifier.height((10 * scaleH).dp))
 
-                        // Email
                         OutlinedTextField( value = email, onValueChange = { email = it },
                             label = { Text("Email",
                                 color = Color.Black, fontSize =
@@ -133,7 +131,6 @@ fun SignupScreen(navController: NavController) {
                                 unfocusedIndicatorColor = Color.Gray ) )
                         Spacer(modifier = Modifier.height((10 * scaleH).dp))
 
-                        // Password
                         OutlinedTextField(
                             value = password,
                             onValueChange = { password = it },

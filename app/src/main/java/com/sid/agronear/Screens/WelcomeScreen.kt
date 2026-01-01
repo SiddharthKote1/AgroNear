@@ -38,7 +38,7 @@ fun WelcomeScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = screenHeight * 0.15f), // 15% from top (dynamic)
+                .padding(top = screenHeight * 0.15f),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
@@ -83,14 +83,13 @@ fun WelcomeScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(screenHeight * 0.05f))
 
-                // ✅ Responsive Button
                 Button(
                     onClick = {
-                        navController.navigate(Routes.SelectionScreen)
+                        navController.navigate(Routes.LoginScreen)
                     },
                     modifier = Modifier
                         .fillMaxWidth(1f)
-                        .height(screenHeight * 0.06f), // 7% of screen height
+                        .height(screenHeight * 0.06f),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF00A11B),

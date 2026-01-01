@@ -30,13 +30,18 @@ import com.sid.agronear.Routes
 fun SelectionScreen(navController: NavController) {
     val selectedRole = remember { mutableStateOf<String?>(null) }
 
+
+    val context = LocalContext.current
+    val sharedPrefs = context.getSharedPreferences("AgroNearPrefs", android.content.Context.MODE_PRIVATE)
+    val savedRole = sharedPrefs.getString("user_role", "Occupation")
+
+
     // 👇 scaling based on screen width/height
     val config = LocalConfiguration.current
     val screenWidth = config.screenWidthDp
     val screenHeight = config.screenHeightDp
     val scaleW = screenWidth / 411f
     val scaleH = screenHeight / 891f
-    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -75,10 +80,9 @@ fun SelectionScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(horizontal = (10 * scaleW).dp),
             ) {
-                // ---- Farmer Card ----
                 Card(
                     modifier = Modifier
-                        .width((screenWidth * 0.4f).dp)
+                        .width((screenWidth * 0.425f).dp)
                         .height((screenHeight * 0.32f).dp)
                         .clickable { selectedRole.value = "Farmer" }
                         .then(
@@ -122,10 +126,9 @@ fun SelectionScreen(navController: NavController) {
                     }
                 }
 
-                // ---- Buyer Card ----
                 Card(
                     modifier = Modifier
-                        .width((screenWidth * 0.4f).dp)
+                        .width((screenWidth * 0.425f).dp)
                         .height((screenHeight * 0.32f).dp)
                         .clickable { selectedRole.value = "Buyer" }
                         .then(
@@ -175,8 +178,12 @@ fun SelectionScreen(navController: NavController) {
             Button(
                 onClick = {
                     if (selectedRole.value != null) {
-                        // You can pass the selected role to the next screen using arguments if needed
-                        navController.navigate(Routes.LoginScreen)
+
+                        val sharedPrefs = context.getSharedPreferences("AgroNearPrefs", android.content.Context.MODE_PRIVATE)
+                        sharedPrefs.edit().putString("user_role", selectedRole.value).apply()
+
+
+                        navController.navigate(Routes.MainScreen)
                     } else {
                         Toast.makeText(context, "Please select a role to continue", Toast.LENGTH_SHORT).show()
                     }
@@ -206,4 +213,3 @@ fun SelectionScreen(navController: NavController) {
 fun SelectionScreenPreview() {
     SelectionScreen(navController = NavController(context = LocalContext.current))
 }
-

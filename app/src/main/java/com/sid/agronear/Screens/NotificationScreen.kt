@@ -58,7 +58,7 @@ fun NotificationScreen(
                 .background(Color(0xFF66BB6A))
         ) {
             IconButton(
-                onClick = { onBackClick() },
+                onClick = { navController.popBackStack() },
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .padding(top = (40 * scaleH).dp, start = (16 * scaleW).dp)

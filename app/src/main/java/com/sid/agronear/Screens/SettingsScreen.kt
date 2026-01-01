@@ -77,7 +77,7 @@ fun SettingsScreen(navController: NavController) {
                 .background(Color(0xFF66BB6A))
         ) {
             IconButton(
-                onClick = {  },
+                onClick = { navController.popBackStack() },
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .padding(top = (40 * scaleH).dp, start = (16 * scaleW).dp)

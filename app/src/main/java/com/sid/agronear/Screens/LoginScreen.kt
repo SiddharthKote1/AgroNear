@@ -209,7 +209,7 @@ fun LoginScreen(navController: NavController) {
 
             // 🔹 Login Button (aligned with Card)
             Button(
-                onClick = { navController.navigate(Routes.ProfileScreen) },
+                onClick = { navController.navigate(Routes.MainScreen) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height((48 * scaleH).dp),
