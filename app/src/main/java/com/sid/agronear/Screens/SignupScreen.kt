@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,9 +23,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sid.agronear.R
 import com.sid.agronear.Routes
+import com.sid.agronear.Screens.viewmodel.SignupViewModel
 
 @Composable
 fun SignupScreen(navController: NavController) {
+
+    val viewModel: SignupViewModel = viewModel()
+
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -39,6 +44,16 @@ fun SignupScreen(navController: NavController) {
     val screenHeight = config.screenHeightDp
     val scaleW = screenWidth / 411f
     val scaleH = screenHeight / 891f
+
+
+    LaunchedEffect(viewModel.signupSuccess) {
+        if (viewModel.signupSuccess) {
+            navController.navigate(Routes.MainScreen) {
+                popUpTo(Routes.SignupScreen) { inclusive = true }
+            }
+        }
+    }
+
 
     Box(
         modifier = Modifier
@@ -206,7 +221,14 @@ fun SignupScreen(navController: NavController) {
             Spacer(modifier = Modifier.height((20 * scaleH).dp))
 
             Button(
-                onClick = { navController.navigate(Routes.SelectionScreen) },
+                onClick = {
+                    viewModel.signup(
+                        name = name,
+                        email = email,
+                        password = password,
+                        confirmPassword = rePassword
+                    )
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = (30 * scaleW).dp)
@@ -217,11 +239,19 @@ fun SignupScreen(navController: NavController) {
                     contentColor = Color.Black
                 )
             ) {
-                Text(
-                    text = "Signup",
-                    fontSize = (20 * scaleW).sp,
-                    fontWeight = FontWeight.Bold
-                )
+                if (viewModel.isLoading) {
+                    CircularProgressIndicator(
+                        color = Color.Black,
+                        strokeWidth = 2.dp,
+                        modifier = Modifier.size(22.dp)
+                    )
+                } else {
+                    Text(
+                        text = "Signup",
+                        fontSize = (20 * scaleW).sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     }

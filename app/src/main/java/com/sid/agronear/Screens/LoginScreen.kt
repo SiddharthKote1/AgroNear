@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -18,16 +20,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sid.agronear.R
 import com.sid.agronear.Routes
+import com.sid.agronear.Screens.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
+    val viewModel: LoginViewModel = viewModel()
     val config = LocalConfiguration.current
     val screenWidth = config.screenWidthDp
     val screenHeight = config.screenHeightDp
@@ -209,7 +214,16 @@ fun LoginScreen(navController: NavController) {
 
             // 🔹 Login Button (aligned with Card)
             Button(
-                onClick = { navController.navigate(Routes.MainScreen) },
+                onClick = {
+                    viewModel.login(
+                        email = email,
+                        password = password
+                    ) {
+                        navController.navigate(Routes.MainScreen) {
+                            popUpTo(Routes.LoginScreen) { inclusive = true }
+                        }
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height((48 * scaleH).dp),
@@ -219,11 +233,19 @@ fun LoginScreen(navController: NavController) {
                     contentColor = Color.Black
                 )
             ) {
-                Text(
-                    text = "Login",
-                    fontSize = (20 * scaleW).sp,
-                    fontWeight = FontWeight.Bold
-                )
+                if (viewModel.isLoading) {
+                    CircularProgressIndicator(
+                        color = Color.Black,
+                        strokeWidth = 2.dp,
+                        modifier = Modifier.size(22.dp)
+                    )
+                } else {
+                    Text(
+                        text = "Login",
+                        fontSize = (20 * scaleW).sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     }

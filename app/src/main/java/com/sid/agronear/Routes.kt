@@ -18,4 +18,8 @@ object Routes {
     const val AboutAppScreen="AboutAppScreen"
 
     const val MainScreen="MainScreen"
+
+    const val AddProductScreen="AddProductScreen"
+
+    const val WishlistScreen ="WishlistScreen"
 }
