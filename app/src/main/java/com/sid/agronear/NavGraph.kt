@@ -5,15 +5,17 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.sid.agronear.Routes.MainAppScreen
 import com.sid.agronear.Screens.AboutAppScreen
 import com.sid.agronear.Screens.LoginScreen
-import com.sid.agronear.Screens.MainScreen
+import com.sid.agronear.Screens.MainAppScreen
 import com.sid.agronear.Screens.NotificationScreen
 import com.sid.agronear.Screens.ProfileScreen
 import com.sid.agronear.Screens.SelectionScreen
 import com.sid.agronear.Screens.SettingsScreen
 import com.sid.agronear.Screens.SignupScreen
 import com.sid.agronear.Screens.WelcomeScreen
+import com.sid.agronear.Screens.WishlistScreen
 
 
 @Composable
@@ -22,7 +24,7 @@ fun NavGraph(modifier: Modifier = Modifier) {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.WelcomeScreem
+        startDestination = Routes.MainAppScreen
     ) {
         composable(Routes.WelcomeScreem) {
             WelcomeScreen(navController = navController)
@@ -48,8 +50,11 @@ fun NavGraph(modifier: Modifier = Modifier) {
         composable(Routes.SettingsScreen){
             SettingsScreen(navController=navController)
         }
-        composable(Routes.MainScreen) {
-            MainScreen(navController = navController)
+        composable(Routes.MainAppScreen) {
+            MainAppScreen(navController = navController)
+        }
+        composable(Routes.WishlistScreen) {
+            WishlistScreen(navController = navController)
         }
     }
 }

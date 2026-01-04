@@ -25,14 +25,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sid.agronear.R
 import com.sid.agronear.Routes
-import com.sid.agronear.Screens.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    val viewModel: LoginViewModel = viewModel()
     val config = LocalConfiguration.current
     val screenWidth = config.screenWidthDp
     val screenHeight = config.screenHeightDp
@@ -167,7 +165,7 @@ fun LoginScreen(navController: NavController) {
                         )
 
                         TextButton(
-                            onClick = { /* TODO: Navigate to password recovery screen */ },
+                            onClick = { /* */ },
                             contentPadding = PaddingValues(0.dp)
                         ) {
                             Text(
@@ -179,7 +177,6 @@ fun LoginScreen(navController: NavController) {
                         }
                     }
 
-                    // 🔹 Signup Row
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -214,16 +211,7 @@ fun LoginScreen(navController: NavController) {
 
             // 🔹 Login Button (aligned with Card)
             Button(
-                onClick = {
-                    viewModel.login(
-                        email = email,
-                        password = password
-                    ) {
-                        navController.navigate(Routes.MainScreen) {
-                            popUpTo(Routes.LoginScreen) { inclusive = true }
-                        }
-                    }
-                },
+               onClick = {navController.navigate(Routes.MainAppScreen)},
                 modifier = Modifier
                     .fillMaxWidth()
                     .height((48 * scaleH).dp),
@@ -233,19 +221,11 @@ fun LoginScreen(navController: NavController) {
                     contentColor = Color.Black
                 )
             ) {
-                if (viewModel.isLoading) {
-                    CircularProgressIndicator(
-                        color = Color.Black,
-                        strokeWidth = 2.dp,
-                        modifier = Modifier.size(22.dp)
-                    )
-                } else {
                     Text(
                         text = "Login",
                         fontSize = (20 * scaleW).sp,
                         fontWeight = FontWeight.Bold
                     )
-                }
             }
         }
     }

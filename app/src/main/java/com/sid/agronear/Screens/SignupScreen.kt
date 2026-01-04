@@ -23,12 +23,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sid.agronear.R
 import com.sid.agronear.Routes
-import com.sid.agronear.Screens.viewmodel.SignupViewModel
 
 @Composable
 fun SignupScreen(navController: NavController) {
-
-    val viewModel: SignupViewModel = viewModel()
 
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -44,15 +41,6 @@ fun SignupScreen(navController: NavController) {
     val screenHeight = config.screenHeightDp
     val scaleW = screenWidth / 411f
     val scaleH = screenHeight / 891f
-
-
-    LaunchedEffect(viewModel.signupSuccess) {
-        if (viewModel.signupSuccess) {
-            navController.navigate(Routes.MainScreen) {
-                popUpTo(Routes.SignupScreen) { inclusive = true }
-            }
-        }
-    }
 
 
     Box(
@@ -127,10 +115,15 @@ fun SignupScreen(navController: NavController) {
 
                         Spacer(modifier = Modifier.height((10 * scaleH).dp))
 
-                        OutlinedTextField( value = email, onValueChange = { email = it },
-                            label = { Text("Email",
-                                color = Color.Black, fontSize =
-                                    (15 * scaleW).sp) },
+                        OutlinedTextField(
+                            value = email, onValueChange = { email = it },
+                            label = {
+                                Text(
+                                    "Email",
+                                    color = Color.Black, fontSize =
+                                        (15 * scaleW).sp
+                                )
+                            },
                             placeholder = { Text("Enter your Email") },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
@@ -143,20 +136,29 @@ fun SignupScreen(navController: NavController) {
                                 focusedLabelColor = Color.Black,
                                 unfocusedLabelColor = Color.DarkGray,
                                 focusedIndicatorColor = Color.Black,
-                                unfocusedIndicatorColor = Color.Gray ) )
+                                unfocusedIndicatorColor = Color.Gray
+                            )
+                        )
                         Spacer(modifier = Modifier.height((10 * scaleH).dp))
 
                         OutlinedTextField(
                             value = password,
                             onValueChange = { password = it },
-                            label = { Text("Password", color = Color.Black, fontSize = (15 * scaleW).sp) },
+                            label = {
+                                Text(
+                                    "Password",
+                                    color = Color.Black,
+                                    fontSize = (15 * scaleW).sp
+                                )
+                            },
                             placeholder = { Text("Enter your password") },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape((10 * scaleW).dp),
                             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                             trailingIcon = {
-                                val icon = if (passwordVisible) R.drawable.visible else R.drawable.hide
+                                val icon =
+                                    if (passwordVisible) R.drawable.visible else R.drawable.hide
                                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
                                     Icon(
                                         painter = painterResource(id = icon),
@@ -183,14 +185,21 @@ fun SignupScreen(navController: NavController) {
                         OutlinedTextField(
                             value = rePassword,
                             onValueChange = { rePassword = it },
-                            label = { Text("Re-Password", color = Color.Black, fontSize = (15 * scaleW).sp) },
+                            label = {
+                                Text(
+                                    "Re-Password",
+                                    color = Color.Black,
+                                    fontSize = (15 * scaleW).sp
+                                )
+                            },
                             placeholder = { Text("Re-enter your password") },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape((10 * scaleW).dp),
                             visualTransformation = if (rePasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                             trailingIcon = {
-                                val iconRes = if (rePasswordVisible) R.drawable.visible else R.drawable.hide
+                                val iconRes =
+                                    if (rePasswordVisible) R.drawable.visible else R.drawable.hide
                                 IconButton(onClick = { rePasswordVisible = !rePasswordVisible }) {
                                     Icon(
                                         painter = painterResource(id = iconRes),
@@ -222,12 +231,7 @@ fun SignupScreen(navController: NavController) {
 
             Button(
                 onClick = {
-                    viewModel.signup(
-                        name = name,
-                        email = email,
-                        password = password,
-                        confirmPassword = rePassword
-                    )
+                   navController.navigate(Routes.MainAppScreen)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -239,23 +243,16 @@ fun SignupScreen(navController: NavController) {
                     contentColor = Color.Black
                 )
             ) {
-                if (viewModel.isLoading) {
-                    CircularProgressIndicator(
-                        color = Color.Black,
-                        strokeWidth = 2.dp,
-                        modifier = Modifier.size(22.dp)
-                    )
-                } else {
-                    Text(
-                        text = "Signup",
-                        fontSize = (20 * scaleW).sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
             }
+            Text(
+                text = "Signup",
+                fontSize = (20 * scaleW).sp,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
+
 
 @Composable
 @Preview(showBackground = true)

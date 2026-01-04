@@ -17,9 +17,7 @@ object Routes {
     const val ProfileScreen="ProfileScreen"
     const val AboutAppScreen="AboutAppScreen"
 
-    const val MainScreen="MainScreen"
+    const val MainAppScreen="MainAppScreen"
 
-    const val AddProductScreen="AddProductScreen"
-
-    const val WishlistScreen ="WishlistScreen"
+    const val WishlistScreen="WishlistScreen"
 }

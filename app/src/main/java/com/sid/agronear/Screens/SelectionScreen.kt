@@ -183,7 +183,7 @@ fun SelectionScreen(navController: NavController) {
                         sharedPrefs.edit().putString("user_role", selectedRole.value).apply()
 
 
-                        navController.navigate(Routes.MainScreen)
+                        navController.navigate(Routes.LoginScreen)
                     } else {
                         Toast.makeText(context, "Please select a role to continue", Toast.LENGTH_SHORT).show()
                     }
