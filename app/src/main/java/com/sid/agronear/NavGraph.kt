@@ -1,10 +1,12 @@
 package com.sid.agronear
 
+import AddProductScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.sid.agronear.Routes.AddProductScreen
 import com.sid.agronear.Routes.MainAppScreen
 import com.sid.agronear.Screens.AboutAppScreen
 import com.sid.agronear.Screens.LoginScreen
@@ -55,6 +57,9 @@ fun NavGraph(modifier: Modifier = Modifier) {
         }
         composable(Routes.WishlistScreen) {
             WishlistScreen(navController = navController)
+        }
+        composable(Routes.AddProductScreen){
+            AddProductScreen(navController = navController)
         }
     }
 }

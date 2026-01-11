@@ -57,8 +57,6 @@ import com.sid.agronear.Routes
 fun MainAppScreen(navController: NavController) {
     var searchproduct by remember { mutableStateOf("") }
 
-
-
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -98,7 +96,7 @@ fun MainAppScreen(navController: NavController) {
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate(Routes.WishlistScreen) },
+                onClick = { navController.navigate(Routes.AddProductScreen) },
                 containerColor = Color(0xFF4E7C4A),
                 modifier = Modifier
                     .size(70.dp)
@@ -193,7 +191,7 @@ fun MainAppScreen(navController: NavController) {
                             price = product.price,
                             farmerName = product.farmer,
                             imageRes = product.image,
-                            onClick = {}
+                            onClick = {navController.navigate(Routes.ProductDetailScreen)}
                         )
                     }
                 }
