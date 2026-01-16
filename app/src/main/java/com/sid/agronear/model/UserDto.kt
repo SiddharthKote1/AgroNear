@@ -1,4 +1,4 @@
-package com.sid.model
+package com.sid.agronear.model
 
 data class UserDto(
     val id: Long,

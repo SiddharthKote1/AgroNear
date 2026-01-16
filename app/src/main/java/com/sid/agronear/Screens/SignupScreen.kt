@@ -1,13 +1,15 @@
 package com.sid.agronear.Screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,25 +25,37 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sid.agronear.R
 import com.sid.agronear.Routes
-
+import com.sid.agronear.viewmodel.AuthViewModel
 @Composable
 fun SignupScreen(navController: NavController) {
+    val authViewModel: AuthViewModel = viewModel()
+
 
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var rePassword by remember { mutableStateOf("") }
 
+    val signupSuccess by authViewModel.loginSuccess.observeAsState()
+    val error by authViewModel.error.observeAsState()
+
     var passwordVisible by remember { mutableStateOf(false) }
     var rePasswordVisible by remember { mutableStateOf(false) }
 
-    // 📱 Dynamic scaling (base: Pixel 2 dimensions)
     val config = LocalConfiguration.current
     val screenWidth = config.screenWidthDp
     val screenHeight = config.screenHeightDp
     val scaleW = screenWidth / 411f
     val scaleH = screenHeight / 891f
 
+
+    signupSuccess?.let {
+        if (it) {
+            navController.navigate(Routes.LoginScreen) {
+                popUpTo(Routes.SignupScreen) { inclusive = true }
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -231,7 +245,9 @@ fun SignupScreen(navController: NavController) {
 
             Button(
                 onClick = {
-                   navController.navigate(Routes.MainAppScreen)
+                    if (password == rePassword) {
+                        authViewModel.register(name, email, password)
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -243,12 +259,12 @@ fun SignupScreen(navController: NavController) {
                     contentColor = Color.Black
                 )
             ) {
+                Text(
+                    text = "Signup",
+                    fontSize = (20 * scaleW).sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
-            Text(
-                text = "Signup",
-                fontSize = (20 * scaleW).sp,
-                fontWeight = FontWeight.Bold
-            )
         }
     }
 }

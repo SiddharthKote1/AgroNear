@@ -2,6 +2,7 @@ package com.sid.agronear.Screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,7 +34,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -47,15 +50,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sid.agronear.R
 import com.sid.agronear.Routes
+import com.sid.agronear.viewmodel.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainAppScreen(navController: NavController) {
     var searchproduct by remember { mutableStateOf("") }
+
+    val viewModel: ProductViewModel = viewModel()
+    val products by viewModel.products.observeAsState(emptyList())
+
+    LaunchedEffect(Unit) {
+        viewModel.loadProducts()
+    }
 
     Scaffold(
         topBar = {
@@ -149,7 +161,7 @@ fun MainAppScreen(navController: NavController) {
                                 tint = Color.DarkGray
                             )
 
-                            Spacer(modifier = Modifier.width(8.dp)) // ✅ spacing
+                            Spacer(modifier = Modifier.width(8.dp))
 
                             Text(
                                 text = "Search product",
@@ -184,14 +196,15 @@ fun MainAppScreen(navController: NavController) {
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
 
-                    items(productList) { product ->
+                    items(products) { product ->
                         ProductCard(
-                            modifier = Modifier,
-                            productName = product.name,
-                            price = product.price,
-                            farmerName = product.farmer,
-                            imageRes = product.image,
-                            onClick = {navController.navigate(Routes.ProductDetailScreen)}
+                            productName = product.productName,
+                            price = product.productPrice.toString(),
+                            farmerName = product.farmerName,
+                            imageRes = R.drawable.rowone,
+                            onClick = {
+                                navController.navigate("${Routes.ProductDetailScreen}/${product.id}")
+                            }
                         )
                     }
                 }
@@ -199,47 +212,6 @@ fun MainAppScreen(navController: NavController) {
         }
     }
 }
-
-data class Product(
-    val name: String,
-    val price: String,
-    val farmer: String,
-    val image: Int
-)
-
-val productList = listOf(
-    Product(
-        name = "Fresh Tomatoes",
-        price = "40 / kg",
-        farmer = "Ramesh Farmer",
-        image = R.drawable.rowone
-    ),
-    Product(
-        name = "Organic Potatoes",
-        price = "30 / kg",
-        farmer = "Suresh Farmer",
-        image = R.drawable.rowtwo
-    ),
-    Product(
-        name = "Green Chillies",
-        price = "80 / kg",
-        farmer = "Anil Farmer",
-        image = R.drawable.rowthree
-    ),
-    Product(
-        name = "Onions",
-        price = "35 / kg",
-        farmer = "Mahesh Farmer",
-        image = R.drawable.rowfour
-    ),
-    Product(
-        name = "Carrots",
-        price = "50 / kg",
-        farmer = "Raj Farmer",
-        image = R.drawable.rowfour
-    )
-)
-
 
 @Composable
 fun ProductCard(
@@ -251,7 +223,7 @@ fun ProductCard(
     onClick: () -> Unit
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(

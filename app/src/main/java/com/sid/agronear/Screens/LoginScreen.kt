@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -20,14 +20,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sid.agronear.R
 import com.sid.agronear.Routes
+import com.sid.agronear.viewmodel.AuthViewModel
 
 @Composable
 fun LoginScreen(navController: NavController) {
+    val authViewModel: AuthViewModel = viewModel()
+
+
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -37,6 +41,19 @@ fun LoginScreen(navController: NavController) {
     val scaleW = screenWidth / 411f
     val scaleH = screenHeight / 891f
     var passwordVisible by remember { mutableStateOf(false) }
+
+    val loginSuccess by authViewModel.loginSuccess.observeAsState()
+    val error by authViewModel.error.observeAsState()
+
+    loginSuccess?.let {
+        if (it) {
+            navController.navigate(Routes.MainAppScreen)
+        }
+    }
+
+    error?.let {
+        Text(it, color = Color.Red)
+    }
 
 
     Box(
@@ -113,7 +130,7 @@ fun LoginScreen(navController: NavController) {
 
                     Spacer(modifier = Modifier.height((12 * scaleH).dp))
 
-                    // 🔹 Password Field
+
                     OutlinedTextField(
                         value = password,
                         onValueChange = { password = it },
@@ -153,7 +170,7 @@ fun LoginScreen(navController: NavController) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height((24 * scaleH).dp),
-                        horizontalArrangement = Arrangement.Center,
+                        horizontalArrangement =Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -209,9 +226,8 @@ fun LoginScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height((20 * scaleH).dp))
 
-            // 🔹 Login Button (aligned with Card)
             Button(
-               onClick = {navController.navigate(Routes.MainAppScreen)},
+               onClick = { authViewModel.login(email, password)},
                 modifier = Modifier
                     .fillMaxWidth()
                     .height((48 * scaleH).dp),

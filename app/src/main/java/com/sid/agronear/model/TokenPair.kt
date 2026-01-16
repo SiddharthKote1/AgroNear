@@ -1,4 +1,4 @@
-package com.sid.model
+package com.sid.agronear.model
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,182 +1,223 @@
-import androidx.compose.foundation.Image
+package com.sid.agronear.Screens
+
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.sid.agronear.R
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sid.agronear.Routes
+import com.sid.agronear.model.ProductDto
+import com.sid.agronear.viewmodel.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddProductScreen(navController: NavController) {
-    var prodName by remember { mutableStateOf("") }
-    var price by remember {mutableStateOf("")}
-    var Quantity by remember {mutableStateOf("")}
-    var Descrip by remember {mutableStateOf("")}
+
+    // 🔹 ViewModel + Context
+    val viewModel: ProductViewModel = viewModel()
+    val context = LocalContext.current
+
+    // 🔹 UI States
+    var productName by remember { mutableStateOf("") }
+    var category by remember { mutableStateOf("Vegetable") }
+    var quantity by remember { mutableStateOf("") }
+    var price by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val addSuccess by viewModel.addSuccess.observeAsState()
+
+
+
+    LaunchedEffect(addSuccess) {
+        if (addSuccess == true) {
+            navController.navigate(Routes.MainAppScreen) {
+                popUpTo(Routes.AddProductScreen) { inclusive = true }
+            }
+        }
+    }
+
+
+
+    // 🔹 Image Picker
+    val imagePickerLauncher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.GetContent()
+        ) { uri ->
+            imageUri = uri
+        }
+
+    val screenColor = Color(0xFFE8F5E9)
+    val cardColor = Color(0xFFF1F8F4)
+    val accentGreen = Color(0xFF5C8D4E)
+
     Scaffold(
+        containerColor = screenColor,
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        "Add Product",
-                        color = Color.White,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                },
+            TopAppBar(
+                title = { Text("Add Product") },
                 navigationIcon = {
-                    IconButton(onClick = {  }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back",
-                            tint = Color.White
-                        )
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color(0xFF4E7C4A)
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = screenColor
                 )
             )
         }
-    ) { padding ->
+    ) { paddingValues ->
 
         Column(
             modifier = Modifier
-                .padding(padding)
+                .fillMaxSize()
+                .padding(paddingValues)
                 .padding(16.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
-            // 🔹 Upload Photo
-            Text("Upload Photo", fontWeight = FontWeight.Medium)
-
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(150.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(Color(0xFFF2F2F2))
-                    .clickable { /* open image picker */ },
-                contentAlignment = Alignment.Center
+                    .background(cardColor, RoundedCornerShape(20.dp))
+                    .padding(16.dp)
             ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Image(
-                        painter = painterResource(R.drawable.addfarmproducts),
-                        contentDescription = null,
-                        modifier = Modifier.size(100.dp)
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Button(
-                        onClick = { /* image picker */ },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF4E7C4A)
+
+                // ---------- Add Photo ----------
+                Box(
+                    modifier = Modifier
+                        .size(120.dp)
+                        .align(Alignment.CenterHorizontally)
+                        .border(
+                            BorderStroke(1.dp, Color(0xFFB7D7C2)),
+                            RoundedCornerShape(16.dp)
                         )
-                    ) {
-                        Text("Add Image")
-                    }
+                        .clickable {
+                            imagePickerLauncher.launch("image/*")
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = if (imageUri == null) "Add Photo" else "Photo Selected",
+                        color = Color.Gray
+                    )
                 }
-            }
 
-            // 🔹 Product Name
-            Text("Product Name")
-            OutlinedTextField(
-                value = prodName,
-                onValueChange = {prodName=it},
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true
-            )
+                Spacer(modifier = Modifier.height(20.dp))
 
-            Text("Price per kg")
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+                // ---------- Product Name ----------
+                Text("Product Name")
+                OutlinedTextField(
+                    value = productName,
+                    onValueChange = { productName = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // ---------- Category ----------
+                Text("Quantity (kg)")
+                OutlinedTextField(
+                    value = quantity,
+                    onValueChange = { quantity = it },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // ---------- Price ----------
+                Text("Price per kg")
                 OutlinedTextField(
                     value = price,
-                    onValueChange = {price=it},
-                    leadingIcon = { Text("₹") },
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number
-                    ),
-                    modifier = Modifier.weight(1f)
+                    onValueChange = { price = it },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Kg")
-            }
 
-            Text("Available Quantity in kg")
-            OutlinedTextField(
-                value = Quantity,
-                onValueChange = {Quantity=it},
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number
-                ),
-                modifier = Modifier.fillMaxWidth()
-            )
+                Spacer(modifier = Modifier.height(12.dp))
 
-            Text("Description")
-            OutlinedTextField(
-                value = Descrip,
-                onValueChange = {Descrip=it},
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Enter description") }
-            )
+                // ---------- Description ----------
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text("Description")
+                    Text("${description.length}/500", color = Color.Gray)
+                }
 
-            Button(
-                onClick = { navController.navigate(Routes.MainAppScreen) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF4E7C4A)
-                ),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Text("Submit", fontSize = 18.sp)
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = {
+                        if (it.length <= 500) description = it
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp),
+                    maxLines = 5
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Button(
+                    onClick = {
+                        if (
+                            //imageUri != null &&
+                            productName.isNotBlank() &&
+                            price.isNotBlank()
+                        ) {
+                            viewModel.addProduct(
+                                ProductDto(
+                                    id = 0L,
+                                    productName = productName,
+                                    productPrice = price.toDoubleOrNull() ?: 0.0,
+                                    quantity = quantity.toIntOrNull() ?: 1,
+                                    description = description,
+                                    imageUrl = "https://via.placeholder.com/300",
+                                    farmerName = ""
+                                )
+                            )
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(52.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = accentGreen
+                    )
+                ) {
+                    Text(
+                        text = "Add Product",
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
             }
         }
     }
@@ -184,6 +225,6 @@ fun AddProductScreen(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun AddProductScreenPreview(){
+fun AddProductScreenPreview() {
     AddProductScreen(navController = rememberNavController())
 }

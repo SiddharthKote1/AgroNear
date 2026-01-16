@@ -1,10 +1,10 @@
-package com.sid.Api
+package com.sid.agronear.Api
 
 
-import com.sid.model.LoginRequest
-import com.sid.model.ProductDto
-import com.sid.model.RegisterRequest
-import com.sid.model.TokenPair
+import com.sid.agronear.model.LoginRequest
+import com.sid.agronear.model.ProductDto
+import com.sid.agronear.model.RegisterRequest
+import com.sid.agronear.model.TokenPair
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE

@@ -1,17 +1,20 @@
 package com.sid.agronear
 
-import AddProductScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.sid.agronear.Routes.AddProductScreen
 import com.sid.agronear.Routes.MainAppScreen
 import com.sid.agronear.Screens.AboutAppScreen
+import com.sid.agronear.Screens.AddProductScreen
 import com.sid.agronear.Screens.LoginScreen
 import com.sid.agronear.Screens.MainAppScreen
 import com.sid.agronear.Screens.NotificationScreen
+import com.sid.agronear.Screens.ProductDetailScreen
 import com.sid.agronear.Screens.ProfileScreen
 import com.sid.agronear.Screens.SelectionScreen
 import com.sid.agronear.Screens.SettingsScreen
@@ -26,7 +29,7 @@ fun NavGraph(modifier: Modifier = Modifier) {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.MainAppScreen
+        startDestination = Routes.WelcomeScreem
     ) {
         composable(Routes.WelcomeScreem) {
             WelcomeScreen(navController = navController)
@@ -34,23 +37,23 @@ fun NavGraph(modifier: Modifier = Modifier) {
         composable(Routes.LoginScreen) {
             LoginScreen(navController = navController)
         }
-        composable(Routes.SignupScreen){
-            SignupScreen(navController=navController)
+        composable(Routes.SignupScreen) {
+            SignupScreen(navController = navController)
         }
-        composable(Routes.SelectionScreen){
-            SelectionScreen(navController=navController)
+        composable(Routes.SelectionScreen) {
+            SelectionScreen(navController = navController)
         }
-        composable(Routes.NotificationScreen){
-            NotificationScreen(navController=navController)
+        composable(Routes.NotificationScreen) {
+            NotificationScreen(navController = navController)
         }
-        composable(Routes.ProfileScreen){
-            ProfileScreen(navController=navController)
+        composable(Routes.ProfileScreen) {
+            ProfileScreen(navController = navController)
         }
-        composable(Routes.AboutAppScreen){
-            AboutAppScreen(navController=navController)
+        composable(Routes.AboutAppScreen) {
+            AboutAppScreen(navController = navController)
         }
-        composable(Routes.SettingsScreen){
-            SettingsScreen(navController=navController)
+        composable(Routes.SettingsScreen) {
+            SettingsScreen(navController = navController)
         }
         composable(Routes.MainAppScreen) {
             MainAppScreen(navController = navController)
@@ -58,8 +61,21 @@ fun NavGraph(modifier: Modifier = Modifier) {
         composable(Routes.WishlistScreen) {
             WishlistScreen(navController = navController)
         }
-        composable(Routes.AddProductScreen){
+        composable(Routes.AddProductScreen) {
             AddProductScreen(navController = navController)
         }
+        composable(
+            route = "${Routes.ProductDetailScreen}/{productId}",
+            arguments = listOf(navArgument("productId") {
+                type = NavType.LongType
+            })
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getLong("productId") ?: 0L
+            ProductDetailScreen(
+                navController = navController,
+          //      productId = productId
+            )
+        }
+
     }
 }

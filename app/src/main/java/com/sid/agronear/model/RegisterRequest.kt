@@ -1,4 +1,4 @@
-package com.sid.model
+package com.sid.agronear.model
 
 data class RegisterRequest(
     val name: String,

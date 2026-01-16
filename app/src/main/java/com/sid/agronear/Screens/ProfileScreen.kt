@@ -48,7 +48,6 @@ fun ProfileScreen(navController: NavController) {
             .fillMaxSize()
             .background(Color(0xFFE8F5E9))
     ) {
-        // ✅ Header same as Notification screen
         Box(
             modifier = Modifier
                 .fillMaxWidth()
