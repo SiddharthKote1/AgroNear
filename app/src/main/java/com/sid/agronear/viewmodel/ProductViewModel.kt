@@ -11,6 +11,9 @@ import kotlinx.coroutines.launch
 class ProductViewModel(application: Application) : AndroidViewModel(application) {
 
 
+    private val _myProducts = MutableLiveData<List<ProductDto>>()
+    val myProducts: LiveData<List<ProductDto>> = _myProducts
+
     private val _addSuccess = MutableLiveData<Boolean>()
     val addSuccess: LiveData<Boolean> = _addSuccess
 
@@ -58,6 +61,18 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    fun loadMyProducts() {
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                _myProducts.value = repo.getMyProducts()
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+            _loading.value = false
+        }
+    }
+
     fun addProduct(product: ProductDto) {
         viewModelScope.launch {
             try {
@@ -88,40 +103,6 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
             try {
                 repo.deleteProduct(id)
                 loadProducts()
-            } catch (e: Exception) {
-                _error.value = e.message
-            }
-        }
-    }
-
-    // ================= Wishlist =================
-
-    fun loadWishlist() {
-        viewModelScope.launch {
-            try {
-                _wishlist.value = repo.getWishlist()
-            } catch (e: Exception) {
-                _error.value = e.message
-            }
-        }
-    }
-
-    fun addToWishlist(productId: Long) {
-        viewModelScope.launch {
-            try {
-                repo.addToWishlist(productId)
-                loadWishlist()
-            } catch (e: Exception) {
-                _error.value = e.message
-            }
-        }
-    }
-
-    fun removeFromWishlist(productId: Long) {
-        viewModelScope.launch {
-            try {
-                repo.removeFromWishlist(productId)
-                loadWishlist()
             } catch (e: Exception) {
                 _error.value = e.message
             }

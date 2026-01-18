@@ -1,7 +1,7 @@
 package com.sid.agronear.Screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -18,11 +17,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,23 +35,45 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sid.agronear.R
-import androidx.navigation.compose.rememberNavController
+import com.sid.agronear.viewmodel.ProductViewModel
+import androidx.compose.runtime.collectAsState
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductDetailScreen(navController: NavController) {
+fun ProductDetailScreen(
+    navController: NavController,
+    productId: Long?
+) {
+
+
+
+    val viewModel: ProductViewModel = viewModel()
+    val product by viewModel.selectedProduct.observeAsState()
+
+
+
+    LaunchedEffect(productId) {
+        productId?.let {
+            viewModel.loadProduct(it)
+        }
+    }
+
     var productName by remember { mutableStateOf("Product Name") }
     Scaffold(topBar = {
         CenterAlignedTopAppBar(
             title = {
-                Text(productName,
+                Text(product?.productName ?: "",
                     color = Color.White,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 26.sp)
             },
             navigationIcon = {
-                IconButton(onClick = {}) {
+                IconButton(onClick = {
+                    navController.popBackStack()
+                }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Go back",
@@ -61,14 +82,14 @@ fun ProductDetailScreen(navController: NavController) {
                 }
             },
             actions = {
-                IconButton(onClick = {}) {
-                    IconButton(onClick = {}) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.redheart),
-                            contentDescription = "",
-                            tint = Color.Unspecified
-                        )
-                    }
+                IconButton(onClick = {
+
+                    }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.redheart),
+                        contentDescription = "Wishlist",
+                        tint = Color.Unspecified
+                    )
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
@@ -97,7 +118,7 @@ fun ProductDetailScreen(navController: NavController) {
 
 
                 Text(
-                    text = "₹120 / kg",
+                    text = product?.productPrice.toString(),
                     fontSize = 30.sp,
                     fontWeight = FontWeight.ExtraBold,
                     style = androidx.compose.material3.MaterialTheme.typography.headlineLarge,
@@ -108,7 +129,7 @@ fun ProductDetailScreen(navController: NavController) {
                     modifier = Modifier.padding(top = 8.dp)
                 ) {
                     Text(
-                        text = "Available:",
+                        text = "Available: ",
                         fontWeight = FontWeight.SemiBold,
                         color = Color.Gray,
                         modifier = Modifier.padding(top = 8.dp),
@@ -116,7 +137,7 @@ fun ProductDetailScreen(navController: NavController) {
                     )
 
                     Text(
-                        text = " 25 kg",
+                        text = product?.quantity?.toString()?:"",
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(top = 8.dp),
@@ -137,7 +158,7 @@ fun ProductDetailScreen(navController: NavController) {
                     )
 
                     Text(
-                        text = " Farmer name ",
+                        text = product?.farmerName?:"",
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(top = 8.dp),
@@ -153,7 +174,7 @@ fun ProductDetailScreen(navController: NavController) {
                 Spacer(modifier=Modifier.height(10.dp))
 
                 Text(
-                    text = "Fresh organic vegetables directly from the farm. No chemicals used. Harvested this morning and delivered the same day.",
+                    text = product?.description?:"",
                     style = MaterialTheme.typography.bodyLarge.copy(
                         lineHeight = 22.sp),
                     textAlign = TextAlign.Start
@@ -173,5 +194,5 @@ fun ProductDetailScreen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun ProductDetailScreenPreview(){
-    ProductDetailScreen(navController = rememberNavController())
+   // ProductDetailScreen(navController = rememberNavController())
 }

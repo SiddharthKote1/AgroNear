@@ -11,6 +11,13 @@ class ProductRepository(private val api: ApiService) {
         throw Exception("Failed to load products")
     }
 
+    suspend fun getMyProducts(): List<ProductDto> {
+        val res = api.getMyProducts()
+        if (res.isSuccessful) return res.body() ?: emptyList()
+        throw Exception("Failed to load my products")
+    }
+
+
 
     suspend fun getProductById(id: Long): ProductDto {
         val res = api.getProductById(id)
@@ -33,19 +40,4 @@ class ProductRepository(private val api: ApiService) {
         if (!res.isSuccessful) throw Exception("Failed to delete product")
     }
 
-    suspend fun getWishlist(): List<ProductDto> {
-        val res = api.getWishlist()
-        if (res.isSuccessful) return res.body() ?: emptyList()
-        throw Exception("Failed to load wishlist")
-    }
-
-    suspend fun addToWishlist(productId: Long) {
-        val res = api.addToWishlist(productId)
-        if (!res.isSuccessful) throw Exception("Failed to add to wishlist")
-    }
-
-    suspend fun removeFromWishlist(productId: Long) {
-        val res = api.removeFromWishlist(productId)
-        if (!res.isSuccessful) throw Exception("Failed to remove from wishlist")
-    }
 }

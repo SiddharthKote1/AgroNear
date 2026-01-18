@@ -64,17 +64,7 @@ interface ApiService {
         @Path("id") id: Long
     ): Response<Unit>
 
+    @GET("products/my")
+    suspend fun getMyProducts(): Response<List<ProductDto>>
 
-    @POST("wishlist/{productId}")
-    suspend fun addToWishlist(
-        @Path("productId") productId: Long
-    ): Response<Unit>
-
-    @DELETE("wishlist/{productId}")
-    suspend fun removeFromWishlist(
-        @Path("productId") productId: Long
-    ): Response<Unit>
-
-    @GET("wishlist")
-    suspend fun getWishlist(): Response<List<ProductDto>>
 }
