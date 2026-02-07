@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "40342193391",
+    "project_id": "agronear-8ad0e",
+    "storage_bucket": "agronear-8ad0e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40342193391:android:a23a0ff5d107cea3f6c71a",
+        "android_client_info": {
+          "package_name": "com.sid.agronear"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX-HBr9YEa_9H_Hi4AiOBEMz9E4iNqqDM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

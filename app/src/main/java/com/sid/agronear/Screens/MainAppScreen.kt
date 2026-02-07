@@ -1,5 +1,6 @@
 package com.sid.agronear.Screens
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -61,6 +62,8 @@ import com.sid.agronear.viewmodel.ProductViewModel
 @Composable
 fun MainAppScreen(navController: NavController) {
     var searchproduct by remember { mutableStateOf("") }
+    var isSearchVisible by remember { mutableStateOf(false) }
+
 
     val viewModel: ProductViewModel = viewModel()
     val products by viewModel.products.observeAsState(emptyList())
@@ -84,7 +87,9 @@ fun MainAppScreen(navController: NavController) {
                     containerColor = Color(0xFF4E7C4A)
                 ),
                 navigationIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {
+                        isSearchVisible = !isSearchVisible
+                    }) {
                         Icon(
                             painter = painterResource(R.drawable.searchicon),
                             contentDescription = "SearchIcon",
@@ -137,57 +142,59 @@ fun MainAppScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(5.dp))
 
-                OutlinedTextField(
-                    value = searchproduct,
-                    onValueChange = { searchproduct = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(90.dp)
-                        .padding(16.dp),
-                    textStyle = TextStyle(
-                        color = Color.Black,
-                        fontSize = 16.sp,
-                        lineHeight = 20.sp
-                    ),
-                    singleLine = true,
-                    placeholder = {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.searchicon),
-                                contentDescription = null,
-                                modifier = Modifier.size(20.dp),
-                                tint = Color.DarkGray
-                            )
+                AnimatedVisibility(visible = isSearchVisible) {
+                    OutlinedTextField(
+                        value = searchproduct,
+                        onValueChange = { searchproduct = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(90.dp)
+                            .padding(16.dp),
+                        textStyle = TextStyle(
+                            color = Color.Black,
+                            fontSize = 16.sp,
+                            lineHeight = 20.sp
+                        ),
+                        singleLine = true,
+                        placeholder = {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.searchicon),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp),
+                                    tint = Color.DarkGray
+                                )
 
-                            Spacer(modifier = Modifier.width(8.dp))
+                                Spacer(modifier = Modifier.width(8.dp))
 
-                            Text(
-                                text = "Search product",
-                                fontSize = 14.sp,
-                                color = Color.DarkGray
-                            )
-                        }
-                    },
-                    shape = RoundedCornerShape(10.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = Color.LightGray,
-                        unfocusedContainerColor = Color.LightGray,
-                        focusedBorderColor = Color(0xFF4E7C4A),
-                        unfocusedBorderColor = Color.Gray,
-                        focusedLabelColor = Color(0xFF4E7C4A),
-                        cursorColor = Color(0xFF4E7C4A)
-                    ),
-                    trailingIcon = {
-                        IconButton(onClick = {}) {
-                            Icon(
-                                painter = painterResource(R.drawable.microphone),
-                                contentDescription = "voice search",
-                                modifier = Modifier.size(30.dp)
-                            )
-                        }
-                    })
+                                Text(
+                                    text = "Search product",
+                                    fontSize = 14.sp,
+                                    color = Color.DarkGray
+                                )
+                            }
+                        },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = Color.LightGray,
+                            unfocusedContainerColor = Color.LightGray,
+                            focusedBorderColor = Color(0xFF4E7C4A),
+                            unfocusedBorderColor = Color.Gray,
+                            focusedLabelColor = Color(0xFF4E7C4A),
+                            cursorColor = Color(0xFF4E7C4A)
+                        ),
+                        trailingIcon = {
+                            IconButton(onClick = {}) {
+                                Icon(
+                                    painter = painterResource(R.drawable.microphone),
+                                    contentDescription = "voice search",
+                                    modifier = Modifier.size(30.dp)
+                                )
+                            }
+                        })
+                }
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier.fillMaxSize(),

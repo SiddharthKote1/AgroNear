@@ -1,5 +1,6 @@
 package com.sid.agronear.Screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.material3.Text
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sid.agronear.R
 import com.sid.agronear.viewmodel.ProductViewModel
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,7 +51,7 @@ fun ProductDetailScreen(
 ) {
 
 
-
+    val context= LocalContext.current
     val viewModel: ProductViewModel = viewModel()
     val product by viewModel.selectedProduct.observeAsState()
 
@@ -83,7 +85,7 @@ fun ProductDetailScreen(
             },
             actions = {
                 IconButton(onClick = {
-
+                    Toast.makeText(context,"Still in process",Toast.LENGTH_SHORT).show()
                     }) {
                     Icon(
                         painter = painterResource(id = R.drawable.redheart),
@@ -118,7 +120,7 @@ fun ProductDetailScreen(
 
 
                 Text(
-                    text = product?.productPrice.toString(),
+                    text = "Rs "+product?.productPrice.toString(),
                     fontSize = 30.sp,
                     fontWeight = FontWeight.ExtraBold,
                     style = androidx.compose.material3.MaterialTheme.typography.headlineLarge,
@@ -137,7 +139,7 @@ fun ProductDetailScreen(
                     )
 
                     Text(
-                        text = product?.quantity?.toString()?:"",
+                        text = product?.quantity?.toString()?:"Kg",
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(top = 8.dp),
@@ -150,7 +152,7 @@ fun ProductDetailScreen(
                     modifier = Modifier.padding(top = 8.dp)
                 ) {
                     Text(
-                        text = "Sold by",
+                        text = "Sold by: ",
                         fontWeight = FontWeight.SemiBold,
                         color = Color.Gray,
                         modifier = Modifier.padding(top = 8.dp),

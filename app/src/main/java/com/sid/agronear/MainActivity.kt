@@ -23,6 +23,7 @@ class MainActivity : ComponentActivity() {
         TokenManager.init(applicationContext)
 
         enableEdgeToEdge()
+        TokenManager.init(this)
         setContent {
             AgroNearTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

@@ -49,13 +49,14 @@ fun SignupScreen(navController: NavController) {
     val scaleH = screenHeight / 891f
 
 
-    signupSuccess?.let {
-        if (it) {
+    LaunchedEffect(signupSuccess) {
+        if (signupSuccess == true) {
             navController.navigate(Routes.LoginScreen) {
                 popUpTo(Routes.SignupScreen) { inclusive = true }
             }
         }
     }
+
 
     Box(
         modifier = Modifier

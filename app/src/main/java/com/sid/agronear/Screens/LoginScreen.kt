@@ -45,11 +45,16 @@ fun LoginScreen(navController: NavController) {
     val loginSuccess by authViewModel.loginSuccess.observeAsState()
     val error by authViewModel.error.observeAsState()
 
-    loginSuccess?.let {
-        if (it) {
-            navController.navigate(Routes.MainAppScreen)
+    LaunchedEffect(loginSuccess) {
+        if (loginSuccess == true) {
+            navController.navigate(Routes.MainAppScreen) {
+                popUpTo(Routes.LoginScreen) { inclusive = true }
+            }
         }
     }
+
+
+
 
     error?.let {
         Text(it, color = Color.Red)
