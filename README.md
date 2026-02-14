@@ -1,50 +1,87 @@
-AgroNear – Android Application
+# 🌾 AgroNear – Farmer Marketplace App
 
-AgroNear is an Android application designed to connect farmers directly with buyers, enabling them to buy and sell agricultural products through a simple and secure mobile platform.
+<p align="center">
+  Connecting Farmers Directly with Buyers 🚜
+</p>
 
-🚨 Problem Statement
+---
 
-Farmers often struggle to reach buyers directly and rely on intermediaries, leading to unfair pricing and limited market access. AgroNear provides a direct digital marketplace to bridge this gap.
+## 💡 About AgroNear
 
-✨ Key Features
+**AgroNear** is an Android application designed to connect farmers directly with buyers through a secure and easy-to-use digital marketplace.
 
-Farmer and Buyer registration and login
+The platform eliminates middlemen and enables farmers to sell agricultural products directly to customers.
 
-Product upload with image and price by farmers
+---
 
-Browse and view agricultural products
+## 🚨 Problem Statement
 
-Wishlist functionality for buyers
+Farmers often rely on intermediaries to sell their produce, resulting in unfair pricing and reduced profits.
 
-Secure access using JWT-based authentication
+Buyers struggle to access reliable sources for fresh agricultural products.
 
-⚙️ How It Works
+AgroNear bridges this gap by providing a transparent and direct mobile marketplace.
 
-User registers or logs in as Farmer or Buyer
+---
 
-Farmers upload product details with images
+## ✨ Key Features
 
-Buyers browse products and add them to wishlist
+- 👤 Farmer & Buyer Registration/Login
+- 🧑‍🌾 Product upload with image and pricing
+- 🛒 Browse agricultural products
+- ❤️ Wishlist functionality for buyers
+- 🔐 JWT-based authentication
+- ⚡ Fast and responsive UI
 
-App communicates securely with backend APIs using JWT
+---
 
-🛠️ Tech Stack
+## ⚙️ How It Works
 
-Kotlin
+1️⃣ User registers or logs in as Farmer or Buyer  
+2️⃣ Farmers upload product details with images and price  
+3️⃣ Buyers browse available products  
+4️⃣ Buyers can add products to wishlist  
+5️⃣ App communicates securely with backend APIs using JWT  
 
-Jetpack Compose
+---
 
-MVVM Architecture
+## 🛠️ Tech Stack
 
-Retrofit & OkHttp
+### Android
+- Kotlin
+- Jetpack Compose
+- MVVM Architecture
 
-Kotlin Coroutines
+### Networking
+- Retrofit
+- OkHttp
+- Kotlin Coroutines
 
-SharedPreferences / DataStore
+### Storage
+- SharedPreferences / DataStore
 
-📦 Current Status
+---
 
-Android application is fully implemented and integrated with backend APIs.
+## 🔐 Security
 
+- JWT Authentication
+- Secure API communication
+- Token stored locally
+- Role-based access control
 
+---
+
+## 📦 Current Status
+
+- Android app fully implemented
+- Backend API integration completed
+- Authentication & product flow verified
+- Tested on real Android devices
+
+---
+
+## 👨‍💻 Developed By
+
+**Siddharth Kote**  
+Android Developer
 
